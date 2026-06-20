@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pembayaran - Input Data</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Input Area */
+        .input-area {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .input-area h3 {
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .input-area textarea {
+            width: 100%;
+            height: 250px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .input-area textarea:focus {
+            outline: none;
+            border-color: #0d47a1;
+        }
+
+        .input-area .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #0d47a1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+        }
+
+        .btn-danger {
+            background: #c62828;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #388e3c;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #555;
+            border: 2px solid #ddd;
+        }
+
+        .btn-outline:hover {
+            background: #f5f5f5;
+        }
+
+        .info-text {
+            font-size: 13px;
+            color: #888;
+            margin-top: 10px;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .info-text code {
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Filter Status */
+        .filter-area {
+            background: white;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-area .filter-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .filter-area .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 6px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #555;
+        }
+
+        .filter-btn:hover {
+            border-color: #0d47a1;
+            color: #0d47a1;
+        }
+
+        .filter-btn.active {
+            background: #0d47a1;
+            color: white;
+            border-color: #0d47a1;
+        }
+
+        .filter-btn.active-pending {
+            background: #f57f17;
+            color: white;
+            border-color: #f57f17;
+        }
+
+        .filter-btn.active-success {
+            background: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+        }
+
+        .filter-btn.active-failed {
+            background: #c62828;
+            color: white;
+            border-color: #c62828;
+        }
+
+        .filter-btn .count-badge {
+            display: inline-block;
+            background: rgba(0,0,0,0.1);
+            padding: 0 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+
+        .filter-btn.active .count-badge {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .card .label {
+            font-size: 13px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .card .value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .card .value.amount { color: #0d47a1; }
+        .card .value.fee { color: #e65100; }
+        .card .value.grand { color: #1b5e20; }
+        .card .value.revenue { color: #c62828; }
+        .card .value.count { color: #6a1b9a; }
+
+        .card .badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 3px 12px;
+            border-radius: 20px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .badge.blue { background: #e3f2fd; color: #0d47a1; }
+        .badge.orange { background: #fff3e0; color: #e65100; }
+        .badge.green { background: #e8f5e9; color: #2e7d32; }
+        .badge.red { background: #ffebee; color: #c62828; }
+        .badge.purple { background: #f3e5f5; color: #6a1b9a; }
+        .badge.gold { background: #fff8e1; color: #f57f17; }
+
+        /* Table */
+        .panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .panel h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        table th {
+            background: #f8f9fa;
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid #e9ecef;
+            white-space: nowrap;
+        }
+
+        table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        table tr:hover td {
+            background: #f8f9fa;
+        }
+
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+
+        .fee-high { color: #e65100; font-weight: 600; }
+        .fee-low { color: #0d47a1; }
+        .status-pending { color: #f57f17; font-weight: 600; }
+        .status-success { color: #2e7d32; font-weight: 600; }
+        .status-failed { color: #c62828; font-weight: 600; }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .cards {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .card .value {
+                font-size: 20px;
+            }
+
+            .input-area textarea {
+                height: 180px;
+            }
+
+            .btn {
+                padding: 8px 20px;
+                font-size: 12px;
+                flex: 1;
+            }
+
+            .filter-area {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>📊 Dashboard Pembayaran</h1>
+        <div class="subtitle">Tempel data transaksi • Filter status • Otomatis hitung total</div>
+    </div>
+
+    <!-- INPUT AREA -->
+    <div class="input-area">
+        <h3>📝 Tempel Data Transaksi di sini</h3>
+        <textarea id="dataInput" placeholder="Tempel data dari Excel/CSV/Text di sini...&#10;&#10;Format yang didukung:&#10;- Tab-separated (copy dari Excel)&#10;- Pipe-separated (|)&#10;- Comma-separated (CSV)&#10;&#10;Kolom yang dibaca:&#10;Status | Bank | Account Holder | Amount | Disbursement Fee"></textarea>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="processData()">▶ Proses Data</button>
+            <button class="btn btn-success" onclick="loadSample()">📥 Load Contoh</button>
+            <button class="btn btn-danger" onclick="clearData()">🗑 Clear</button>
+        </div>
+        <div class="info-text">
+            💡 <strong>Tips:</strong> Copy data dari Excel/Google Sheets, lalu paste di atas. 
+            Gunakan filter status di bawah untuk melihat transaksi berdasarkan status.
+            <br>
+            Format: <code>Status | Bank | Account Holder | Amount | Fee</code>
+        </div>
+    </div>
+
+    <!-- FILTER STATUS -->
+    <div class="filter-area" id="filterArea">
+        <span class="filter-label">🔍 Filter Status:</span>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all" onclick="applyFilter('all')">
+                Semua <span class="count-badge" id="countAll">0</span>
+            </button>
+            <button class="filter-btn" data-filter="pending" onclick="applyFilter('pending')">
+                ⏳ Pending <span class="count-badge" id="countPending">0</span>
+            </button>
+            <button class="filter-btn" data-filter="success" onclick="applyFilter('success')">
+                ✅ Success <span class="count-badge" id="countSuccess">0</span>
+            </button>
+            <button class="filter-btn" data-filter="failed" onclick="applyFilter('failed')">
+                ❌ Failed <span class="count-badge" id="countFailed">0</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="cards" id="cardsContainer">
+        <div class="card">
+            <div class="label">📌 Total Transaksi</div>
+            <div class="value count" id="totalCount">0</div>
+            <span class="badge purple" id="statusLabel">Semua Status</span>
+        </div>
+        <div class="card">
+            <div class="label">💰 Total Amount</div>
+            <div class="value amount" id="totalAmount">Rp0</div>
+            <span class="badge blue">Total</span>
+        </div>
+        <div class="card">
+            <div class="label">📋 Total Disbursement Fee</div>
+            <div class="value fee" id="totalFee">Rp0</div>
+            <span class="badge orange">Fee Terhitung</span>
+        </div>
+        <div class="card">
+            <div class="label">📦 Grand Total</div>
+            <div class="value grand" id="grandTotal">Rp0</div>
+            <span class="badge green">Amount + Fee</span>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="panel">
+        <h3>📋 Daftar Transaksi <span id="tableTitle">(Semua Status)</span></h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Status</th>
+                        <th>Bank</th>
+                        <th>Account Holder</th>
+                        <th class="text-right">Amount</th>
+                        <th class="text-right">Fee</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="icon">📭</div>
+                                <p>Belum ada data</p>
+                                <p style="font-size:12px;">Tempel data di atas dan klik "Proses Data"</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot id="tableFooter" class="hidden">
+                    <tr style="background:#f8f9fa; font-weight:700;">
+                        <td colspan="4" class="text-right">TOTAL</td>
+                        <td class="text-right" id="footerAmount">Rp0</td>
+                        <td class="text-right" id="footerFee">Rp0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- FORMULA -->
+    <div class="panel" id="formulaPanel" style="display:none;">
+        <h3>📐 Formula Perhitungan</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; font-size:13px;">
+            <div>
+                <strong>Total Amount</strong><br>
+                = SUM(Amount)<br>
+                = <span style="color:#0d47a1; font-weight:700;" id="formulaAmount">Rp0</span>
+            </div>
+            <div>
+                <strong>Total Fee</strong><br>
+                = (Jumlah ≥10Jt × Rp3.500) + (Jumlah &lt;10Jt × Rp1.600)<br>
+                = <span style="color:#e65100; font-weight:700;" id="formulaFee">Rp0</span>
+            </div>
+            <div>
+                <strong>Grand Total</strong><br>
+                = Amount + Fee<br>
+                = <span style="color:#1b5e20; font-weight:700;" id="formulaGrand">Rp0</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ============ GLOBAL VARIABLES ============
+    let allTransactions = [];
+    let currentFilter = 'all';
+
+    // ============ SAMPLE DATA ============
+    const SAMPLE_DATA = `Status	Bank	Account Holder	Amount	Disbursement Fee
+pending	Bank BCA	BUDI SANTOSO	Rp15,000,000	Rp3,500
+pending	Bank BNI	SITI AMINAH	Rp8,500,000	Rp1,600
+success	Bank BRI	AGUS PRASETYO	Rp5,000,000	Rp1,600
+pending	Bank Seabank	DEWI ANGGRAINI	Rp12,000,000	Rp3,500
+pending	Bank Jago	RUDI HARTONO	Rp2,500,000	Rp1,600
+pending	Bank BCA	FITRI YANI	Rp7,200,000	Rp1,600
+success	Bank BNI	JOKO WIDODO	Rp4,000,000	Rp1,600
+pending	Bank BCA	RINA MARLINA	Rp25,000,000	Rp3,500
+pending	Bank BRI	ANDI PRATAMA	Rp3,800,000	Rp1,600
+pending	Bank BNI	LINDA SUSANTI	Rp1,200,000	Rp1,600
+failed	Bank BCA	ARIF BUDIMAN	Rp6,000,000	Rp1,600
+success	Bank BNI	DEWI KARTIKA	Rp9,000,000	Rp1,600`;
+
+    // ============ PROCESS DATA ============
+    function processData() {
+        const raw = document.getElementById('dataInput').value;
+        if (!raw.trim()) {
+            alert('⚠️ Silakan tempel data terlebih dahulu!');
+            return;
+        }
+
+        const lines = raw.split('\n').filter(line => line.trim());
+        if (lines.length < 2) {
+            alert('⚠️ Data minimal harus ada header + 1 baris data!');
+            return;
+        }
+
+        // Deteksi delimiter
+        const header = lines[0];
+        let delimiter = '\t';
+        if (header.includes('|')) delimiter = '|';
+        else if (header.includes(',')) delimiter = ',';
+
+        // Parse header
+        const headers = header.split(delimiter).map(h => h.trim().toLowerCase());
+        const statusIdx = headers.findIndex(h => h.includes('status'));
+        const bankIdx = headers.findIndex(h => h.includes('bank'));
+        const holderIdx = headers.findIndex(h => h.includes('account') || h.includes('holder') || h.includes('name'));
+        const amountIdx = headers.findIndex(h => h.includes('amount'));
+        const feeIdx = headers.findIndex(h => h.includes('fee') || h.includes('disbursement'));
+
+        if (statusIdx === -1 || bankIdx === -1 || amountIdx === -1) {
+            alert('⚠️ Kolom yang dibutuhkan tidak ditemukan!\n\n' +
+                  'Pastikan ada kolom: Status, Bank, Amount\n' +
+                  'Opsional: Account Holder, Disbursement Fee');
+            return;
+        }
+
+        // Parse semua data
+        allTransactions = [];
+        for (let i = 1; i < lines.length; i++) {
+            const cols = lines[i].split(delimiter).map(c => c.trim());
+            if (cols.length < Math.max(statusIdx, bankIdx, amountIdx) + 1) continue;
+
+            let status = cols[statusIdx]?.toLowerCase() || '';
+            // Normalize status
+            if (status.includes('pending')) status = 'pending';
+            else if (status.includes('success') || status.includes('sukses')) status = 'success';
+            else if (status.includes('fail') || status.includes('gagal') || status.includes('error')) status = 'failed';
+            
+            const bank = cols[bankIdx] || '';
+            const holder = holderIdx !== -1 ? cols[holderIdx] || '-' : '-';
+            let amount = parseRupiah(cols[amountIdx] || '0');
+            let fee = feeIdx !== -1 ? parseRupiah(cols[feeIdx] || '0') : 0;
+
+            // Hitung fee otomatis jika tidak ada atau 0
+            if (fee === 0) {
+                fee = amount >= 10000000 ? 3500 : 1600;
+            }
+            
+            allTransactions.push({ status, bank, holder, amount, fee });
+        }
+
+        // Update filter counts
+        updateFilterCounts();
+        
+        // Apply current filter
+        applyFilter(currentFilter);
+    }
+
+    // ============ PARSE RUPIAH ============
+    function parseRupiah(str) {
+        if (!str) return 0;
+        const clean = str.replace(/[Rp\s,.]/g, '').replace(/\./g, '');
+        const num = parseInt(clean);
+        return isNaN(num) ? 0 : num;
+    }
+
+    // ============ FORMAT RUPIAH ============
+    function formatRupiah(num) {
+        if (num === 0) return 'Rp0';
+        return 'Rp' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    // ============ UPDATE FILTER COUNTS ============
+    function updateFilterCounts() {
+        const all = allTransactions.length;
+        const pending = allTransactions.filter(t => t.status === 'pending').length;
+        const success = allTransactions.filter(t => t.status === 'success').length;
+        const failed = allTransactions.filter(t => t.status === 'failed').length;
+
+        document.getElementById('countAll').textContent = all;
+        document.getElementById('countPending').textContent = pending;
+        document.getElementById('countSuccess').textContent = success;
+        document.getElementById('countFailed').textContent = failed;
+    }
+
+    // ============ APPLY FILTER ============
+    function applyFilter(filter) {
+        currentFilter = filter;
+        
+        // Update active button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active', 'active-pending', 'active-success', 'active-failed');
+            if (btn.dataset.filter === filter) {
+                btn.classList.add('active');
+                if (filter === 'pending') btn.classList.add('active-pending');
+                else if (filter === 'success') btn.classList.add('active-success');
+                else if (filter === 'failed') btn.classList.add('active-failed');
+            }
+        });
+
+        // Filter data
+        let filtered = allTransactions;
+        let statusLabel = 'Semua Status';
+        if (filter === 'pending') {
+            filtered = allTransactions.filter(t => t.status === 'pending');
+            statusLabel = '⏳ Pending';
+        } else if (filter === 'success') {
+            filtered = allTransactions.filter(t => t.status === 'success');
+            statusLabel = '✅ Success';
+        } else if (filter === 'failed') {
+            filtered = allTransactions.filter(t => t.status === 'failed');
+            statusLabel = '❌ Failed';
+        }
+
+        // Update dashboard with filtered data
+        updateDashboard(filtered, statusLabel);
+    }
+
+    // ============ UPDATE DASHBOARD ============
+    function updateDashboard(transactions, statusLabel = '') {
+        const count = transactions.length;
+        const totalAmount = transactions.reduce((sum, t) => sum + t.amount, 0);
+        const totalFee = transactions.reduce((sum, t) => sum + t.fee, 0);
+        const grandTotal = totalAmount + totalFee;
+
+        // Update Cards
+        document.getElementById('totalCount').textContent = count;
+        document.getElementById('totalAmount').textContent = formatRupiah(totalAmount);
+        document.getElementById('totalFee').textContent = formatRupiah(totalFee);
+        document.getElementById('grandTotal').textContent = formatRupiah(grandTotal);
+        
+        // Update status label di card
+        if (statusLabel) {
+            document.getElementById('statusLabel').textContent = statusLabel;
+        }
+
+        // Update Table Title
+        document.getElementById('tableTitle').textContent = statusLabel ? `(${statusLabel})` : '';
+
+        // Update Table
+        const tbody = document.getElementById('tableBody');
+        const tfoot = document.getElementById('tableFooter');
+        const footerAmount = document.getElementById('footerAmount');
+        const footerFee = document.getElementById('footerFee');
+
+        if (count === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <div class="icon">📭</div>
+                            <p>Tidak ada transaksi dengan status ini</p>
+                            <p style="font-size:12px;">Coba filter status lain atau proses ulang data</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            tfoot.classList.add('hidden');
+        } else {
+            let rows = '';
+            transactions.forEach((t, idx) => {
+                const feeClass = t.fee === 3500 ? 'fee-high' : 'fee-low';
+                const feeStar = t.fee === 3500 ? ' ⭐' : '';
+                let statusClass = 'status-pending';
+                let statusIcon = '⏳';
+                if (t.status === 'success') { statusClass = 'status-success'; statusIcon = '✅'; }
+                else if (t.status === 'failed') { statusClass = 'status-failed'; statusIcon = '❌'; }
+                
+                rows += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td class="${statusClass}">${statusIcon} ${t.status.toUpperCase()}</td>
+                        <td>${t.bank}</td>
+                        <td>${t.holder}</td>
+                        <td class="text-right">${formatRupiah(t.amount)}</td>
+                        <td class="text-right ${feeClass}">${formatRupiah(t.fee)}${feeStar}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = rows;
+            footerAmount.textContent = formatRupiah(totalAmount);
+            footerFee.textContent = formatRupiah(totalFee);
+            tfoot.classList.remove('hidden');
+        }
+
+        // Update Formula
+        const countHigh = transactions.filter(t => t.amount >= 10000000).length;
+        const countLow = transactions.filter(t => t.amount < 10000000).length;
+        const feeManual = (countHigh * 3500) + (countLow * 1600);
+
+        document.getElementById('formulaAmount').textContent = formatRupiah(totalAmount);
+        document.getElementById('formulaFee').textContent = formatRupiah(feeManual);
+        document.getElementById('formulaGrand').textContent = formatRupiah(grandTotal);
+        
+        if (allTransactions.length > 0) {
+            document.getElementById('formulaPanel').style.display = 'block';
+        }
+    }
+
+    // ============ LOAD SAMPLE ============
+    function loadSample() {
+        document.getElementById('dataInput').value = SAMPLE_DATA;
+        processData();
+    }
+
+    // ============ CLEAR ============
+    function clearData() {
+        document.getElementById('dataInput').value = '';
+        allTransactions = [];
+        currentFilter = 'all';
+        
+        document.getElementById('tableBody').innerHTML = `
+            <tr>
+                <td colspan="6">
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <p>Belum ada data</p>
+                        <p style="font-size:12px;">Tempel data di atas dan klik "Proses Data"</p>
+                    </div>
+                </td>
+            </tr>
+        `;
+        document.getElementById('tableFooter').classList.add('hidden');
+        document.getElementById('formulaPanel').style.display = 'none';
+        
+        document.getElementById('totalCount').textContent = '0';
+        document.getElementById('totalAmount').textContent = 'Rp0';
+        document.getElementById('totalFee').textContent = 'Rp0';
+        document.getElementById('grandTotal').textContent = 'Rp0';
+        document.getElementById('statusLabel').textContent = 'Semua Status';
+        document.getElementById('tableTitle').textContent = '';
+        
+        // Reset filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active', 'active-pending', 'active-success', 'active-failed');
+            if (btn.dataset.filter === 'all') btn.classList.add('active');
+        });
+        
+        document.getElementById('countAll').textContent = '0';
+        document.getElementById('countPending').textContent = '0';
+        document.getElementById('countSuccess').textContent = '0';
+        document.getElementById('countFailed').textContent = '0';
+    }
+
+    console.log('✅ Dashboard siap digunakan!');
+    console.log('📌 Tempel data, klik "Proses Data", lalu filter berdasarkan status.');
+</script>
+
+</body>
+</html>
