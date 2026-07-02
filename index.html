@@ -605,7 +605,8 @@ success	Bank BNI	DEWI KARTIKA	Rp9,000,000	Rp1,600`;
     // ============ FORMAT RUPIAH ============
     function formatRupiah(num) {
         if (num === 0) return 'Rp0';
-        return 'Rp' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        // Gunakan koma sebagai pemisah ribuan
+        return 'Rp' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
     // ============ UPDATE FILTER COUNTS ============
